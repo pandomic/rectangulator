@@ -1,0 +1,24 @@
+{
+  "appId": "org.rectangulator.app",
+  "productName": "Rectangulator",
+  "artifactName": "rectangulator-${env.BUILD_MODE}-${version}.${ext}",
+  "copyright": "Anastasios Karampekios & Vlad Gramuzov",
+  "compression": "maximum",
+  "directories": {
+    "output": "build",
+    "buildResources": "public"
+  },
+  "files": ["dist/*", "dist/**/*"],
+  "linux": {
+    "target": "AppImage",
+    "category": "Utility",
+    "icon": "dist/icon.png"
+  },
+  "mac": {
+    "icon": "dist/icon.icns"
+  },
+  "win": {
+    "icon": "dist/icon.ico",
+    "target": ["nsis", "appx"] 
+  }
+}
