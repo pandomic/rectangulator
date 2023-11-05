@@ -1,7 +1,7 @@
 {
   "appId": "org.rectangulator.app",
   "productName": "Rectangulator",
-  "artifactName": "rectangulator-${env.BUILD_MODE}-${version}.${ext}",
+  "artifactName": "rectangulator-${version}.${ext}",
   "copyright": "Anastasios Karampekios & Vlad Gramuzov",
   "compression": "maximum",
   "directories": {
@@ -20,5 +20,8 @@
   "win": {
     "icon": "dist/icon.ico",
     "target": ["nsis", "appx"] 
-  }
+  },
+  "extraResources": [
+    "./dist/binaries/*"
+  ]
 }

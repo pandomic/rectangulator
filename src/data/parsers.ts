@@ -7,7 +7,9 @@ export enum ParserType {
 export type ParserFunction = (data: string) => DataSet;
 
 export const parseCsvData: ParserFunction = (data: string): DataSet => {
-  const lines = data.split("\n");
+  const adjustedData = data.replace(/\r/g, "");
+
+  const lines = adjustedData.split("\n");
   const labels = lines[0].split(",");
 
   const entities: [string, Set<string>][] = labels.map((label) => [label, new Set()]);

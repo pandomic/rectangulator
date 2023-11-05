@@ -1,6 +1,7 @@
 import * as path from 'path';
 import highs from 'highs';
 import { app } from 'electron';
+import isDev from 'electron-is-dev';
 import child_process from 'child_process';
 import tmp from 'tmp';
 import fs from 'fs';
@@ -9,22 +10,26 @@ import util from 'util';
 
 import { LPEncoder, LPNewModel, LPSolution, LPSolver } from "@/types";
 
+const binariesPath: string = isDev
+  ? path.join(app.getAppPath(), 'dist', 'binaries')
+  : path.join(process.resourcesPath, 'dist', 'binaries');
+
 const exec = util.promisify(child_process.exec);
 
-const HIGHS_MAP: Record<string, Record<string, [string, string]>> = {
+const HIGHS_MAP: Record<string, Record<string, string>> = {
   darwin: {
-    arm64: [path.join(app.getAppPath(), 'dist', 'binaries'), './highs_darwin_arm64'],
+    arm64: path.join(binariesPath, 'highs_darwin_arm64'),
   },
 };
 
 const highs_settings = {
-  locateFile: (file: string) => `/${file}`
+  locateFile: (file: string) => path.join(binariesPath, file),
 };
 
 const getWasmOptimizer = async () => highs(highs_settings);
 
 const getBinaryOptimizer = async (platform: string, arch: string) => {
-  const [cwd, binary] = HIGHS_MAP[platform][arch];
+  const binary = HIGHS_MAP[platform][arch];
 
   const solve = async (model: string): Promise<Solution> => {
     const tempPath = app.getPath('temp');
@@ -51,7 +56,7 @@ const getBinaryOptimizer = async (platform: string, arch: string) => {
     try {
       console.log(highsCmd);
 
-      const { stderr, stdout } = await exec(highsCmd, { cwd });
+      const { stderr, stdout } = await exec(highsCmd);
 
       console.log(stdout);
       console.error(stderr);

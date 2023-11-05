@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { readFileSync } from 'fs';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import isDev from 'electron-is-dev';
 
 import { optimizeModel, encodeModel } from '@/models/solvers';
@@ -15,7 +16,7 @@ const STATE: {
 
 const createWindow = async () => {
   STATE.window = new BrowserWindow({
-    width: isDev ? 1400 : 1000,
+    width: isDev ? 1400 : 800,
     height: 800,
     icon: path.join(app.getAppPath(), 'dist', 'favicon.png'),
     webPreferences: {
@@ -65,4 +66,17 @@ ipcMain.handle('optimizeMIPModel', async (_event, model: LPNewModel) => {
 
 ipcMain.handle('encodeMIPModel', async (_event, model: LPNewModel) => {
   return encodeModel('highs', model);
+});
+
+ipcMain.handle('showCSVSelectionDialog', async (): Promise<string | undefined> => {
+  const selectedFiles = await dialog.showOpenDialog(STATE.window!, {
+    filters: [{ name: 'CSV', extensions: ['csv'] }],
+    properties: ['openFile'],
+  });
+
+  if (selectedFiles.canceled || !selectedFiles.filePaths.length) {
+    return;
+  }
+
+  return readFileSync(selectedFiles.filePaths[0], 'utf-8');
 });
