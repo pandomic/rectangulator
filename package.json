@@ -7,11 +7,12 @@
   "private": true,
   "scripts": {
     "package": "NODE_ENV=production yarn build && electron-builder --publish never -c electron-builder.json",
+    "package-win": "set NODE_ENV=production && yarn build && electron-builder --publish never -c electron-builder.json",
     "start": "concurrently -k \"node esbuild.js\" \"yarn electron .\"",
     "build": "node esbuild.js",
     "lint": "eslint --ext .ts src",
     "storybook": "ladle serve"
-  },
+    },
   "devDependencies": {
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@ladle/react": "^3.3.0",
