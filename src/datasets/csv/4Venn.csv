@@ -1,0 +1,9 @@
+A,B,C,D
+a,b,c,d
+ab,abc,cd,cd
+abc,abcd,ac,acd
+abcd,abd,acd,ad
+abd,ab,abc,abcd
+acd,bc,abcd,abd
+ad,bcd,bc,bcd
+ac,bd,bcd,bd
