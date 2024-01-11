@@ -1,10 +1,20 @@
-# Rectengular Sets Visualisation
+# Rectangular Sets Visualisation
+
+Links: [GitHub](https://github.com/pandomic/rectangulator)
 
 ## About the Project
 
 This project implements rectangular Euler-like sets visualization described in the following paper and its supplementary:
 * [Paper](https://graphics.uni-konstanz.de/publikationen/Paetzold2023RectEulerVisualizingIntersecting/Rectangular_Euler_Diagrams_preprint.pdf)
 * [Supplementary](https://graphics.uni-konstanz.de/publikationen/Paetzold2023RectEulerVisualizingIntersecting/Rectangular_Euler_Diagrams_supp.pdf)
+
+### Demo
+
+[![Youtube Demo](https://img.youtube.com/vi/oI83WzUWBjs/1.jpg)](https://youtu.be/oI83WzUWBjs)
+
+### Data Samples
+
+Additional data samples can be found under the `samples` folder.
 
 ### High-level Design
 
@@ -76,4 +86,10 @@ The binary (you will find it under `.tmp/HiGHS/build`) has to be placed under `s
 
 ```bash
 yarn storybook
+```
+
+### Exporting to HTML
+
+```bash
+yarn html
 ```

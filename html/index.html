@@ -1,0 +1,63 @@
+<h1 id="rectangularsetsvisualisation">Rectangular Sets Visualisation</h1>
+<p>Links: <a href="https://github.com/pandomic/rectangulator">GitHub</a></p>
+<h2 id="abouttheproject">About the Project</h2>
+<p>This project implements rectangular Euler-like sets visualization described in the following paper and its supplementary:</p>
+<ul>
+<li><a href="https://graphics.uni-konstanz.de/publikationen/Paetzold2023RectEulerVisualizingIntersecting/Rectangular_Euler_Diagrams_preprint.pdf">Paper</a></li>
+<li><a href="https://graphics.uni-konstanz.de/publikationen/Paetzold2023RectEulerVisualizingIntersecting/Rectangular_Euler_Diagrams_supp.pdf">Supplementary</a></li>
+</ul>
+<h3 id="demo">Demo</h3>
+<p><a href="https://youtu.be/oI83WzUWBjs"><img src="https://img.youtube.com/vi/oI83WzUWBjs/1.jpg" alt="Youtube Demo" /></a></p>
+<h3 id="datasamples">Data Samples</h3>
+<p>Additional data samples can be found under the <code>samples</code> folder.</p>
+<h3 id="highleveldesign">High-level Design</h3>
+<p><img src="docs/design_diagram.png" alt="" /></p>
+<h3 id="additionalperformanceoptimizations">Additional Performance Optimizations</h3>
+<ul>
+<li>We use hash tables to minimize duplications when computing intersections, exclusions, or caching constraints. To make sure constraints only appear once, we use sorted hashes.</li>
+<li>Label overlapping will likely occur on intersections, therefore we only compute label constraints for intersecting sets</li>
+<li>Exclusion constraints are only computed for parent-most sets to avoid creating unnecessary constraints, as group exclusion from the parent set automatically means exclusion from all child nodes</li>
+</ul>
+<h3 id="performanceevaluation">Performance Evaluation</h3>
+<p>Although the project uses a highly efficient LP Solver HiGHS, it cannot achieve the same performance levels as commercial products.</p>
+<p>Performance of the application highly depends on the complexity of the dataset. Optimization may be taking from seconds up to tens of minutes for highly intersecting sets.</p>
+<p>We therefore introduce constraint toggles, to let the user decide which constraints to compute. This allows the user to trade-off between performance and accuracy.</p>
+<h3 id="featureoverview">Feature Overview</h3>
+<p><strong>Home Screen</strong></p>
+<p><img src="docs/home_screen.png" alt="" /></p>
+<p><strong>Preview Screen</strong></p>
+<p><img src="docs/preview_screen.png" alt="" /></p>
+<p><strong>Solution Screen</strong></p>
+<p><img src="docs/solution_screen.png" alt="" /></p>
+<h2 id="settingupdevenvironment">Setting Up Dev Environment</h2>
+<ol>
+<li>For simplicity, use <a href="https://github.com/nvm-sh/nvm">nvm</a> to manage node versions. Recommended version is &gt;= 18</li>
+<li>Install yarn package manager: <code>npm install -g yarn</code></li>
+<li>Install project dependencies: <code>yarn install</code></li>
+<li>Run the project: <code>yarn start</code></li>
+</ol>
+<h2 id="packagingtheproject">Packaging the Project</h2>
+<p>To create project binaries simply run:</p>
+<pre><code class="bash language-bash">yarn package
+</code></pre>
+<p>You will find the binaries under the <code>build</code> folder.</p>
+<h2 id="addingnewhighsbinaries">Adding new HiGHS binaries</h2>
+<p>At the moment the project offers two HiGHS binaries (can be found under <code>src/resources/binaries</code>):</p>
+<ol>
+<li><code>highs_darwin_arm64</code> for Apple Silicon (macOS)</li>
+<li><code>highs.wasm</code> - C++-based web assembly binary which is used as a fallback option</li>
+</ol>
+<h3 id="buildinganewhighsbinary">Building a new HiGHS binary</h3>
+<blockquote>
+  <p>Note you will need <code>cmake</code> and <code>make</code> for the following steps</p>
+</blockquote>
+<p>The actual platform-specific binary may be a little bit faster. You can therefore build and add a binary by yourself:</p>
+<pre><code class="bash language-bash">make build-highs
+</code></pre>
+<p>The binary (you will find it under <code>.tmp/HiGHS/build</code>) has to be placed under <code>src/resources/binaries</code> and added to the mapping in <code>src/models/solvers/highs.ts</code>.</p>
+<h3 id="testinganddevelopingcomponentsinisolation">Testing and Developing components in isolation</h3>
+<pre><code class="bash language-bash">yarn storybook
+</code></pre>
+<h3 id="exportingtohtml">Exporting to HTML</h3>
+<pre><code class="bash language-bash">yarn html
+</code></pre>
