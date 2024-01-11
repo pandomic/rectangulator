@@ -17,11 +17,13 @@ Ms.Norris,Myrte,Wormtail,Remus,Ms.Norris,Draco,Hermione,Dumbledore,Dumbledore
 ,,,,Dudley,,,,Myrte
 ,,,,Vernon,,,,Grindelwald`;
 
+const parsedData = parseData(CSV_DATA, ParserType.CSV);
+
 const dataset: DataSetPreview = {
   name: 'Harry Potter',
-  description: 'A dataset with 4 groups and 4 sets',
+  description: `A custom dataset with ${parsedData.labels.size} labels and ${parsedData.dataWithLabels.size} data points`,
   image: 'datasets/dataset_potter.png',
-  ...parseData(CSV_DATA, ParserType.CSV),
+  ...parsedData,
 };
 
 export default dataset;

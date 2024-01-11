@@ -15,7 +15,7 @@ const getSolverBackend = (solver: SolverBackend = DEFAULT_SOLVER) => {
 export const encodeModel = (solver: SolverBackend, model: LPNewModel): string => {
   return getSolverBackend(solver).encodeModel(model);
 };
-
+ 
 export const optimizeModel = (solver: SolverBackend, model: LPNewModel): Promise<LPSolution> => {
   return getSolverBackend(solver).optimizeModel(model);
 };

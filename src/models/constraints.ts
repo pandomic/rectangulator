@@ -28,7 +28,7 @@ const calculateBigM = (input: LPModelInput): number => {
 /**
  * Optimize group exclusions, as if a group is exlcuded from a parent set,
  * this automatically means it should be excluded from all children sets as well.
- */
+  */
 const buildOptimizedExclusionSets = (group: ClassifiedGroup) => {
   const optimizedExclusionSets: Map<string, ClassifiedSet> = new Map();
 

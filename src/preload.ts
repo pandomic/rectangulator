@@ -8,6 +8,8 @@ const exposedApis = {
     ipcRenderer.invoke('optimizeMIPModel', model) as Promise<Solution>,
   encodeMIPModel: (model: LPNewModel): Promise<string> =>
     ipcRenderer.invoke('encodeMIPModel', model) as Promise<string>,
+  showCSVSelectionDialog: (): Promise<string | undefined> =>
+    ipcRenderer.invoke('showCSVSelectionDialog') as Promise<string | undefined>,
 };
 
 contextBridge.exposeInMainWorld('IPC', exposedApis);

@@ -22,28 +22,24 @@ export const SolutionView = ({ model, dataset, onBack }: SolutionViewProps): Rea
 
   const svgRef = useRef<SVGElement>(null);
 
-  useEffect(() => {
-    const computeSolution = async () => {
-      const startSeconds = new Date().getTime() / 1000;
-      const computedSolution = await window.IPC.optimizeMIPModel(model);
-      const endSeconds = new Date().getTime() / 1000;
+  const computeSolution = async () => {
+    const startSeconds = new Date().getTime() / 1000;
+    const computedSolution = await window.IPC.optimizeMIPModel(model);
+    const endSeconds = new Date().getTime() / 1000;
 
-      if (computedSolution.Status !== 'Optimal') {
-        setError(true);
-        setComputing(false);
-        return;
-      }
-
-      const date = new Date(0);
-      date.setSeconds(endSeconds - startSeconds);
-
-      setTime(date.toISOString().substring(11, 19));
-      setSolution(computedSolution);
+    if (computedSolution.Status !== 'Optimal') {
+      setError(true);
       setComputing(false);
-    };
+      return;
+    }
 
-    computeSolution();
-  }, [model]);
+    const date = new Date(0);
+    date.setSeconds(endSeconds - startSeconds);
+
+    setTime(date.toISOString().substring(11, 19));
+    setSolution(computedSolution);
+    setComputing(false);
+  };
 
   const classifiedDataset = useMemo(() => {
     return classifyDataSet(groupDataSet(dataset));
@@ -67,6 +63,16 @@ export const SolutionView = ({ model, dataset, onBack }: SolutionViewProps): Rea
     link.click();
     URL.revokeObjectURL(link.href);
   };
+
+  const handleRetry = () => {
+    setError(false);
+    setComputing(true);
+    computeSolution();
+  };
+
+  useEffect(() => {
+    computeSolution();
+  }, [model]);
 
   return (
     <SolutionLayout
@@ -96,12 +102,19 @@ export const SolutionView = ({ model, dataset, onBack }: SolutionViewProps): Rea
       )}
       {!computing && error && (
         <Box width="100%" height="100%" display="flex" flexDirection="column">
-          <Alert severity="warning">
+          <Alert
+            severity="warning"
+            action={
+              <Button color="inherit" size="small" onClick={handleRetry}>
+                Retry
+              </Button>
+            }
+          >
             We were unable to find an optimal solution for your problem.
             Consider reducing the dataset size or splitting it into multiple parts.
           </Alert>
           <Box mt={2}>
-            <Button variant="outlined" size="large" fullWidth>
+            <Button variant="outlined" size="large" fullWidth onClick={onBack}>
               Return to Home
             </Button>
           </Box>

@@ -51,4 +51,4 @@ export const SolutionLayout = ({ children, showToolbar, elapsed, onBack, onSaveM
         </Box>
     </div>
   );
-};
+}; 
